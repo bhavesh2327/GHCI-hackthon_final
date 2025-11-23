@@ -7,7 +7,11 @@
 
 ## Problem Statement 🛠️
 
-Currently, Know Your Customer (KYC) processes are predominantly offline or non-interactive online processes. These methods are often manual, cumbersome, and lack user engagement. They can be particularly challenging for users with limited financial resources or education levels. Additionally, existing processes may not be inclusive across languages and generations.
+Reimagine the KYC process with automation, intelligence, and transparency.
+
+KYC is vital for financial services, but it remains slow, manual, and confusing for customers and banks alike. Traditional approaches result in delays, high costs, and a frustrating onboarding experience.
+
+The challenge: Design an AI-powered KYC solution that automates document collection, verification, and risk assessment to deliver a fast, seamless onboarding experience. Your solution should guide users in real time, ensure compliance and transparency, and provide secure, bias-free handling of sensitive data. Aim to make KYC intuitive for customers while empowering banks with smarter, more efficient processes.
 
 We aim to address these challenges by creating an online interactive Video KYC process. This process should be intuitive, self-sufficient, and highly inclusive. It should capture the user's live photograph and basic details such as name, date of birth (DOB), address, PAN card/Aadhaar, signature, income range, and type of employment in a conversational manner. Our goal is to bridge the gap across languages and generations, ensuring accessibility for all users regardless of their financial status or educational background.
 
