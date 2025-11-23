@@ -65,8 +65,6 @@ API Gateway → ML Services → Risk Engine → Decision System
 |
 → Escalation + Audit Dashboard
 
-yaml
-Copy code
 
 - Modular microservices  
 - Event-driven workflows  
