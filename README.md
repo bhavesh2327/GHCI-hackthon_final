@@ -56,8 +56,6 @@ This reduces verification time from **days → minutes**.
 | Signature Detection | 🧪 Prototype |
 | Liveness Detection | ✅ |
 | Facial Recognition | ✅ |
-| Multi-language & Voice Support | 🚧 In Progress |
-| Human Escalation & Audit Dashboard | 🚧 Planned |
 
 ## 🧱 Architecture  
 
