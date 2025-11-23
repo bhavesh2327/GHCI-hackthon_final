@@ -125,17 +125,6 @@ Includes: **field-level encryption + compliance retention policies**
 | OCR Accuracy | > 98% |
 | Liveness → FAR/FRR | Configurable |
 
----
-
-## ▶️ Demo & Repo  
-
-📦 Repository:  
-🔗 https://github.com/bhavesh2327/GHCI-hackthon_final  
-
-🎥 Demo Video:  
-🔗 https://drive.google.com/drive/folders/1VRZ3dsP2xdydkLj8N5Y_mITXUWjbNjiF  
-
----
 
 ## 🚀 Future Enhancements  
 
