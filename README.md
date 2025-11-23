@@ -1,98 +1,145 @@
+🔐 AI-KYC — Intelligent Video-Based KYC Automation built for GHCI hackathon 
+
+Reimagining customer onboarding with AI-powered document verification, video identity validation, and automated compliance workflows.
+
+🌟 Overview
+
+AI-KYC is a next-generation Video-Based KYC platform that simplifies and accelerates identity verification using:
+
+🧠 Machine Learning
+
+🎥 Real-time WebRTC video capture
+
+🔍 OCR-based document extraction
+
+👤 Biometric face recognition & liveness detection
+
+📊 Automated risk scoring with audit trails
+
+The system delivers a fast, transparent, and compliant KYC experience for both users and financial institutions.
+
+🚩 Problem Statement
+
+Traditional KYC workflows are:
+
+Slow and manual
+
+Prone to data entry errors
+
+Expensive to operate at scale
+
+Difficult for senior citizens and non-technical users
+
+There is a need for a solution that is automated, intuitive, compliant, and accessible across languages and demographics.
+
+🎯 Proposed Solution
+
+AI-KYC streamlines the verification process through:
+
+🤖 AI-driven conversational onboarding
+
+🧾 Automatic document detection, OCR, and field extraction
+
+🧬 Face matching + liveness detection
+
+🗣 Read-aloud confirmation and multilingual support
+
+👨‍💻 Human review mode for escalations
+
+Users complete verification effortlessly, while compliance teams gain full traceability, decision logs, and fraud-prevention intelligence.
+
+🛠️ Features
+Feature	Status
+AI-based conversational flow	✅
+WebRTC Video Capture	✅
+PAN/Aadhaar OCR & Validation	✅
+Signature Detection	🧪 Prototype
+Liveness Detection	✅
+Facial Recognition	✅
+Multi-language & Voice Support	🚧 In Progress
+Human Escalation & Audit Dashboard	🚧
+🧱 Architecture Snapshot
+User → WebRTC Interface → Backend API Gateway → ML Pipelines → Risk Engine → Decision Response
+                         |                              |
+                    Storage Layer                 Human Review System
 
 
+Modular microservice design
+
+Event-driven workflows
+
+Scalable inference processing
+
+📦 Tech Stack
+Frontend
+
+Next.js
+
+WebRTC
+
+TailwindCSS + ShadcnUI
+
+Crisp Support
+
+Backend
+
+Node.js (Express, TypeScript)
+
+Python (Flask/FastAPI ML Services)
+
+MongoDB
+
+Redis / RabbitMQ
+
+Machine Learning & CV
+
+OpenCV
+
+Tesseract / EasyOCR
+
+DeepFace / VGG-19
+
+Whisper & Bark AI (speech)
+
+📂 Core Data Models
+
+users
+
+sessions
+
+documents
+
+auditLogs
+
+riskEvents
+
+Includes field-level encryption and compliance retention.
+
+🔐 Security & Compliance
+
+AES-256 encryption at rest
+
+TLS 1.3 in transit
+
+RBAC & least privilege
+
+Immutable audit logs
+
+Bias-aware ML and explainable scoring
+
+📈 KPIs & Performance Targets
+Metric	Goal
+Avg onboarding time	< 5 min
+Automated approval rate	≥ 70%
+OCR accuracy	> 98%
+Liveness false acceptance rate	Configurable
+▶️ Demo & Resources
 
 
+🚀 Future Enhancements
 
+Dedicated senior-citizen guided mode
 
+Support for global ID formats
 
-## Problem Statement 🛠️
-
-Reimagine the KYC process with automation, intelligence, and transparency.
-
-KYC is vital for financial services, but it remains slow, manual, and confusing for customers and banks alike. Traditional approaches result in delays, high costs, and a frustrating onboarding experience.
-
-The challenge: Design an AI-powered KYC solution that automates document collection, verification, and risk assessment to deliver a fast, seamless onboarding experience. Your solution should guide users in real time, ensure compliance and transparency, and provide secure, bias-free handling of sensitive data. Aim to make KYC intuitive for customers while empowering banks with smarter, more efficient processes.
-
-We aim to address these challenges by creating an online interactive Video KYC process. This process should be intuitive, self-sufficient, and highly inclusive. It should capture the user's live photograph and basic details such as name, date of birth (DOB), address, PAN card/Aadhaar, signature, income range, and type of employment in a conversational manner. Our goal is to bridge the gap across languages and generations, ensuring accessibility for all users regardless of their financial status or educational background.
-
-
-## Solution 💪🏽
-
-Our platform aims to streamline and automate the Video KYC process, making it faster, more user-friendly, and compliant. We propose the following features:
-
-### Current Standard Charted Video KYC Process 👩🏻‍💻
-
-- Email or SMS sent with Video KYC Link
-- Permissions Check (Location Access, Audio/Video Capability, Internet Connectivity, Internet Speed)
-- Language Selection and OTP Generation for consent
-- Video/Audio Recording
-- Facial Authentication
-- PAN Photo Capture
-- Appointment Scheduling
-- Browser/tab locking during KYC Process
-
-### Our Solution 📝
-
-- AI-driven conversational flow
-- Facial Authentication
-- PAN Photo Verification
-- Signature Verification 
-- Agent Support throughout KYC Process
-- Read-aloud Details with Voice Confirmation
-- Multiple Language Support
-- ChatBot Support
-
-
-### Architecture 🛠️
-
-![WhatsApp Image 2024-03-16 at 01 46 30](https://github.com/mkswagger/Online_KYC_Team_Heisenberg/assets/34826479/73333529-268f-468c-81a8-1e5de3628ef4)
-
-
-
-### Future Scope 📈
-
-- Implement a step-by-step follow model for senior citizens
-- Continuous improvement of AI algorithms for better accuracy and user experience
-- Integration with additional identity verification methods (e.g., biometrics)
-
-## Team Members
-
-- [redacted]
-
-## Tech Stack 💻
-
-### Frontend 🥷🏼
-
-- Next.js
-- WebRTC for real-time video communication
-- Shadcn
-- Crisp Customer Support
-
-
-### Backend 🐐
-
-- Python with Flask for RESTful API development
-- Express.js
-- NOde.js
-- MongoDB
-- TypeScript
-- MDN Web API
-
-
-### Machine Learning 🧠
-
-- VGG 19 for facial recognition
-- Opencv
-- pytesseract
-- CVQRScanner
-- Deepface
-- cascade classifier
-- Bark and whisper AI
-
-
-## Conclusion
-
-Our Video KYC Automation Platform aims to revolutionize the KYC process, making it seamless, secure, and compliant while providing a superior user experience. We welcome contributions and feedback from the community to further enhance and improve our platform.
-
-
-
+Continuous model retraining pipeline
