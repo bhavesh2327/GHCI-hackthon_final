@@ -1,145 +1,149 @@
-🔐 AI-KYC — Intelligent Video-Based KYC Automation built for GHCI hackathon 
+# 🔐 AI-KYC — Intelligent Video-Based KYC Automation  
+### Built for **GHCI Hackathon 2025**
 
-Reimagining customer onboarding with AI-powered document verification, video identity validation, and automated compliance workflows.
+Reimagining digital onboarding with **AI-powered document verification**, **biometric identity matching**, and **real-time video-based authentication** — ensuring compliance, transparency, and scalability.
 
-🌟 Overview
+---
 
-AI-KYC is a next-generation Video-Based KYC platform that simplifies and accelerates identity verification using:
+## ⚡ Overview  
 
-🧠 Machine Learning
+**AI-KYC** is a next-generation Video-Based KYC system powered by:
 
-🎥 Real-time WebRTC video capture
+- 🧠 Machine Learning  
+- 🎥 WebRTC-based live video capture  
+- 🔍 OCR-powered document extraction  
+- 👤 Biometric face recognition + liveness check  
+- 📊 Automated risk scoring and explainable audit logs  
 
-🔍 OCR-based document extraction
+It delivers a fast, secure, and intuitive onboarding experience tailored for financial institutions and users.
 
-👤 Biometric face recognition & liveness detection
+---
 
-📊 Automated risk scoring with audit trails
+## 🚩 Problem  
 
-The system delivers a fast, transparent, and compliant KYC experience for both users and financial institutions.
+Traditional KYC systems are:
 
-🚩 Problem Statement
+- ⏳ Slow and manually driven  
+- 🧾 Error-prone  
+- 💸 Expensive to scale  
+- ⚠️ Not user-friendly for elderly or non-technical applicants  
 
-Traditional KYC workflows are:
+There is a need for a **smart, automated, multilingual, and accessible system** that reduces friction while preventing fraud.
 
-Slow and manual
+---
 
-Prone to data entry errors
+## 🎯 Solution  
 
-Expensive to operate at scale
+AI-KYC automates the entire KYC lifecycle using an **AI-assisted guided flow**:
 
-Difficult for senior citizens and non-technical users
+- 🤖 Conversational onboarding  
+- 🧾 OCR-based document scanning & extraction  
+- 👤 Face match + passive liveness check  
+- 🗣 Read-aloud verification with multilingual speech support  
+- 👨‍💼 Human escalation workflow for edge cases  
 
-There is a need for a solution that is automated, intuitive, compliant, and accessible across languages and demographics.
+This reduces verification time from **days → minutes**.
 
-🎯 Proposed Solution
+---
 
-AI-KYC streamlines the verification process through:
+## 🛠 Features  
 
-🤖 AI-driven conversational onboarding
+| Feature | Status |
+|--------|--------|
+| AI-based conversational flow | ✅ |
+| WebRTC-Based Video Capture | ✅ |
+| PAN / Aadhaar OCR & Validation | ✅ |
+| Signature Detection | 🧪 Prototype |
+| Liveness Detection | ✅ |
+| Facial Recognition | ✅ |
+| Multi-language & Voice Support | 🚧 In Progress |
+| Human Escalation & Audit Dashboard | 🚧 Planned |
 
-🧾 Automatic document detection, OCR, and field extraction
+## 🧱 Architecture  
 
-🧬 Face matching + liveness detection
+User → WebRTC Client
+↓
+API Gateway → ML Services → Risk Engine → Decision System
+|
+→ Escalation + Audit Dashboard
 
-🗣 Read-aloud confirmation and multilingual support
+yaml
+Copy code
 
-👨‍💻 Human review mode for escalations
+- Modular microservices  
+- Event-driven workflows  
+- Horizontally scalable ML inference  
 
-Users complete verification effortlessly, while compliance teams gain full traceability, decision logs, and fraud-prevention intelligence.
+---
 
-🛠️ Features
-Feature	Status
-AI-based conversational flow	✅
-WebRTC Video Capture	✅
-PAN/Aadhaar OCR & Validation	✅
-Signature Detection	🧪 Prototype
-Liveness Detection	✅
-Facial Recognition	✅
-Multi-language & Voice Support	🚧 In Progress
-Human Escalation & Audit Dashboard	🚧
-🧱 Architecture Snapshot
-User → WebRTC Interface → Backend API Gateway → ML Pipelines → Risk Engine → Decision Response
-                         |                              |
-                    Storage Layer                 Human Review System
+## 🧰 Tech Stack  
 
+### Frontend  
+- Next.js  
+- WebRTC  
+- TailwindCSS + Shadcn  
+- Crisp Live Assistant  
 
-Modular microservice design
+### Backend  
+- Node.js (Express + TypeScript)  
+- Python (FastAPI for ML inference)  
+- MongoDB  
+- Redis / RabbitMQ  
 
-Event-driven workflows
+### Machine Learning  
+- OpenCV  
+- EasyOCR / Tesseract  
+- DeepFace / VGG-19  
+- Whisper + Bark AI
 
-Scalable inference processing
+---
 
-📦 Tech Stack
-Frontend
+## 📂 Core Data Entities  
 
-Next.js
+- `users`  
+- `sessions`  
+- `documents`  
+- `auditLogs`  
+- `riskEvents`  
 
-WebRTC
+Includes: **field-level encryption + compliance retention policies**
 
-TailwindCSS + ShadcnUI
+---
 
-Crisp Support
+## 🔐 Security & Compliance  
 
-Backend
+- AES-256 encrypted storage  
+- TLS 1.3 in transit  
+- RBAC with least-privilege  
+- Immutable audit logs  
+- Explainable AI fairness tracking  
 
-Node.js (Express, TypeScript)
+---
 
-Python (Flask/FastAPI ML Services)
+## 📈 Benchmarks / KPIs  
 
-MongoDB
+| Metric | Target |
+|--------|--------|
+| Avg KYC Completion Time | ⏱ < 5 min |
+| Automated Approval Rate | ≥ 70% |
+| OCR Accuracy | > 98% |
+| Liveness → FAR/FRR | Configurable |
 
-Redis / RabbitMQ
+---
 
-Machine Learning & CV
+## ▶️ Demo & Repo  
 
-OpenCV
+📦 Repository:  
+🔗 https://github.com/bhavesh2327/GHCI-hackthon_final  
 
-Tesseract / EasyOCR
+🎥 Demo Video:  
+🔗 https://drive.google.com/drive/folders/1VRZ3dsP2xdydkLj8N5Y_mITXUWjbNjiF  
 
-DeepFace / VGG-19
+---
 
-Whisper & Bark AI (speech)
+## 🚀 Future Enhancements  
 
-📂 Core Data Models
-
-users
-
-sessions
-
-documents
-
-auditLogs
-
-riskEvents
-
-Includes field-level encryption and compliance retention.
-
-🔐 Security & Compliance
-
-AES-256 encryption at rest
-
-TLS 1.3 in transit
-
-RBAC & least privilege
-
-Immutable audit logs
-
-Bias-aware ML and explainable scoring
-
-📈 KPIs & Performance Targets
-Metric	Goal
-Avg onboarding time	< 5 min
-Automated approval rate	≥ 70%
-OCR accuracy	> 98%
-Liveness false acceptance rate	Configurable
-▶️ Demo & Resources
-
-
-🚀 Future Enhancements
-
-Dedicated senior-citizen guided mode
-
-Support for global ID formats
-
-Continuous model retraining pipeline
+- 🧓 Guided onboarding for senior citizens  
+- 🌍 Support for global govt IDs  
+- 🤖 Continuous ML model retraining  
+- 📱 Mobile SDK + offline verification  
