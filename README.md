@@ -57,91 +57,65 @@ This reduces verification time from **days → minutes**.
 | Liveness Detection | ✅ |
 | Facial Recognition | ✅ |
 
-flowchart LR
+**flowchart LR**
+┌──────────────────────────────────────────────────────────────┐
+│                        User → WebRTC Client                 │
+└──────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+───────────────────────────────────────────────────────────────────
+**Step 1 — API Gateway**
+Acts as the entry point for authentication, routing, throttling,  
+and secure communication with backend microservices.
+───────────────────────────────────────────────────────────────────
+                                 │
+                                 ▼
+───────────────────────────────────────────────────────────────────
+**Step 2 — ML Services**
+Handles:
+  • Face Recognition  
+  • Liveness Detection  
+  • Speech-to-Text  
+  • OCR Document Parsing  
+These services are containerized and scale horizontally based on load.
+───────────────────────────────────────────────────────────────────
+                                 │
+                                 ▼
+───────────────────────────────────────────────────────────────────
+**Step 3 — Risk Engine**
+Aggregates ML outputs, identity checks, user metadata, and anomaly scoring  
+to assign a dynamic Trust/Risk level.
+───────────────────────────────────────────────────────────────────
+                                 │
+                                 ▼
+───────────────────────────────────────────────────────────────────
+**Step 4 — Decision System**
+Final evaluation logic deciding:
+  ✔ Auto Approval  
+  ✔ Rejection  
+  ✔ Escalation to Review  
+───────────────────────────────────────────────────────────────────
+                                 │
+                                 ├─────────────► Manual Review & Compliance Team
+                                 │                   (Escalation Path)
+                                 │
+                                 ▼
+───────────────────────────────────────────────────────────────────
+**Step 5 — Audit & Monitoring Dashboards**
+Centralized UI providing:
+  • Case history  
+  • System logs  
+  • Risk scoring timeline  
+  • Regulatory audit compliance  
+───────────────────────────────────────────────────────────────────
 
-%% --- STEP 1: CLIENT ---
-A["🧑‍💻 WebRTC Client
-- Video Capture
-- Inline Validation
-- Consent & Session"] 
 
--->|"WebRTC + Auth Token"| B
+🧰 **Key Design Principles**
+- Microservice-based modular architecture  
+- Event-driven communication using message queues  
+- Auto-scalable ML inference workloads  
 
-%% --- STEP 2: API GATEWAY ---
-B["🔐 API Gateway / Auth Layer
-- JWT/OAuth2
-- Rate Limiting
-- WebSocket + REST Routing"]
-
--->|"Signaling SDP/ICE"| C
-B -->|"KYC Submission REST / gRPC"| D
-
-%% --- STEP 3: SIGNALING / MEDIA ---
-C["📡 Signaling Service
-(Handles Session Negotiation)"] 
---> TURN
-
-TURN["TURN/STUN Relay"]
-
-%% --- STEP 4: INGEST & QUEUE ---
-D["📩 Ingestion Service
-- Create KYC Session
-- Store Metadata
-- Trigger Processing"]
-
--->|"Publish Event"| E
-
-%% --- STEP 5: EVENT BUS ---
-E["📬 Message Broker
-(Kafka / RabbitMQ / Redis Streams)"]
-
--->|"Inference Jobs"| F
-
-%% --- STEP 6: ML PROCESSING CLUSTER ---
-F["🤖 ML Inference Cluster
-- OCR (ID reading)
-- Face Match
-- Liveness / Anti-Spoofing"] 
--->|"Extracted Signals"| G
-
-%% --- STEP 7: RISK ENGINE ---
-G["⚖️ Risk Engine
-- Aggregation
-- Weighted Scoring
-- Compliance Logic"]
-
--->|"Decision + Confidence"| H
-
-%% --- STEP 8: DECISION SYSTEM ---
-H["🧠 Decision System
-🟢 Approve
-🟡 Escalate (Low Confidence)
-🔴 Reject"]
-
--->|"If Escalated"| I
-H -->|"If Approved/Rejeted"| J
-
-%% --- STEP 9: MANUAL REVIEW UI ---
-I["🧑‍🏫 Manual Review Dashboard
-- Evidence Viewer
-- Override Actions"] 
--->|"Final Action Logged"| J
-
-%% --- STEP 10: STORAGE / AUDIT ---
-J["🗂 Final Record Storage
-- MongoDB (KYC State)
-- Object Storage (Media)
-- Feature Store (ML Signals)"]
-
---> K
-
-%% --- STEP 11: COMPLIANCE ---
-K["📊 Audit & Monitoring
-- OpenTelemetry
-- Prometheus/Grafana
-- Immutable Audit Logs"]
-
----
+-
 
 ## 🧰 Tech Stack  
 
