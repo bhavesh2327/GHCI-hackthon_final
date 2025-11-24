@@ -1,181 +1,221 @@
-🔐 AI-KYC — Intelligent Video-Based KYC Automation
-Built for GHCI Hackathon 2025
+# **AI-KYC — Intelligent Video-Based KYC Automation**
+**Built for GHCI Hackathon 2025**
 
 Reimagining digital onboarding with AI-powered document verification, biometric identity matching, and real-time video authentication — ensuring compliance, transparency, and scalability.
 
-⚡ Overview
+---
+
+## ⚡ Overview
 
 AI-KYC is a next-generation video-based KYC system powered by:
 
-🧠 Machine Learning
+- **Machine Learning**
+- **WebRTC-based live identity capture**
+- **OCR-powered document parsing**
+- **Biometric face recognition + liveness detection**
+- **Automated risk scoring with explainable audit logs**
 
-🎥 WebRTC-based live identity capture
+---
 
-🔍 OCR-powered document parsing
-
-👤 Biometric face recognition + liveness detection
-
-📊 Automated risk scoring with explainable audit logs
-
-🚩 Problem
+## ⚠️ Problem
 
 Traditional KYC systems are:
 
-⏳ Slow and manual
-
-🧾 Error-prone
-
-💸 Expensive at scale
-
-⚠️ Hard for elderly / non-technical users
+- Slow and manual  
+- Error-prone  
+- Expensive at scale  
+- Hard for elderly / non-technical users
 
 There’s a need for a smart, automated, accessible, multilingual verification system that reduces friction while preventing fraud.
 
-🎯 Our Solution
+---
 
-AI-KYC automates the entire verification lifecycle:
+## 🎯 Our Solution
 
-🤖 Conversational guided onboarding
+**AI-KYC automates the entire verification lifecycle:**
 
-🧾 OCR-based document scanning
+- Conversational guided onboarding  
+- OCR-based document scanning  
+- Face matching + passive liveness detection  
+- Read-aloud text verification (multilingual)  
+- Human review escalation when confidence drops
 
-👤 Face match + passive liveness
+**Outcome:** Days → Minutes
 
-🗣 Read-aloud text verification ( multilingual )
+---
 
-👨‍💼 Human review escalation when confidence drops
+## 🛠 Feature Matrix
 
-⏱ Outcome: Days → Minutes
+| Feature                                 | Status       |
+|----------------------------------------:|:------------:|
+| AI-guided conversational onboarding     | ✅            |
+| WebRTC Live Capture                     | ✅            |
+| PAN / Aadhaar OCR Parsing               | ✅            |
+| Signature Detection                     | 🧪 Prototype  |
+| Passive Liveness Detection              | ✅            |
+| Facial Recognition                      | ✅            |
 
-🛠 Feature Matrix
-Feature	Status
-AI-guided conversational onboarding	✅
-WebRTC Live Capture	✅
-PAN / Aadhaar OCR Parsing	✅
-Signature Detection	🧪 Prototype
-Passive Liveness Detection	✅
-Facial Recognition	✅
+---
 
-🧩 System Architecture
-┌──────────────────────────────────────────────────────────────┐
-│                     User → WebRTC Client                     │
-└──────────────────────────────────────────────────────────────┘
-                                 │
-                                 ▼
-───────────────────────────────────────────────────────────────────
-**Step 1 — API Gateway**
-Authentication, routing, throttling, and secure request handling.
-───────────────────────────────────────────────────────────────────
-                                 │
-                                 ▼
-───────────────────────────────────────────────────────────────────
-**Step 2 — ML Services**
-• Face Recognition  
-• Liveness Detection  
-• OCR Document Parsing  
-• Speech-to-Text  
-Horizontally scalable inference via containerized microservices.
-───────────────────────────────────────────────────────────────────
-                                 │
-                                 ▼
-───────────────────────────────────────────────────────────────────
-**Step 3 — Risk Engine**
-Scores user identity using ML results, metadata, and anomaly detection.
-───────────────────────────────────────────────────────────────────
-                                 │
-                                 ▼
-───────────────────────────────────────────────────────────────────
-**Step 4 — Decision System**
-Logic determines:  
-✔ Auto-Approve | ❌ Reject | 🏷 Escalate to Human Review
-───────────────────────────────────────────────────────────────────
-                                 │
-                                 ├─────────────► Manual Compliance Review
-                                 │
-                                 ▼
-───────────────────────────────────────────────────────────────────
-**Step 5 — Audit Dashboard**
-Case history, scoring timeline, compliance logs, traceability.
-───────────────────────────────────────────────────────────────────
+## 🧩 System Architecture
 
+A high-level flow of the system is illustrated below. The mermaid flowchart is included for quick visualization and the numbered steps follow the same sequence so readers without mermaid rendering can still read the flow.
 
-🧰 Key Principles
+```mermaid
+flowchart LR
 
-Modular microservice architecture
+%% --- STEP 1: CLIENT ---
+A["🧑‍💻 WebRTC Client
+- Video Capture
+- Inline Validation
+- Consent & Session"] 
 
-Event-driven async workflows
+-->|\"WebRTC + JWT Auth\"| B
 
-Auto-scaled ML inference workloads
+%% --- STEP 2: API GATEWAY ---
+B["🔐 API Gateway / Auth Layer
+- OAuth2/JWT
+- Rate Limiting
+- REST + WebSocket Routing"]
 
-🧰 Tech Stack
-🎨 Frontend
+-->|\"SDP / ICE Signaling\"| C
+B -->|\"KYC Submission (REST/gRPC)\"| D
 
-Next.js
+%% --- STEP 3: SIGNALING / MEDIA ---
+C["📡 Signaling Service
+- Session Negotiation"] --> TURN
 
-WebRTC
+TURN["TURN/STUN Media Relay"]
 
-TailwindCSS + Shadcn
+%% --- STEP 4: INGEST & QUEUE ---
+D["📩 Ingestion Service
+- Create KYC Session
+- Store Metadata
+- Trigger Processing"] -->|\"Publish Event\"| E
 
-Crisp Assistant
+%% --- STEP 5: EVENT STREAM ---
+E["📬 Message Broker
+(Kafka / RabbitMQ / Redis Streams)"] -->|\"ML Jobs\"| F
 
-⚙️ Backend
+%% --- STEP 6: ML PROCESSING CLUSTER ---
+F["🤖 ML Inference Cluster
+- OCR (Documents)
+- Face Match
+- Liveness & Anti-Spoofing"] -->|\"Signals + Confidence Scores\"| G
 
-Node.js (Express + TypeScript)
+%% --- STEP 7: RISK ENGINE ---
+G["⚖️ Risk Engine
+- Signal Aggregation
+- Scoring Model
+- Rules / Compliance Logic"] -->|\"Decision Payload\"| H
 
-Python (FastAPI for ML inference)
+%% --- STEP 8: DECISION SYSTEM ---
+H["🧠 Decision System
+🟢 Approve | 🔴 Reject | 🟡 Review"] -->|\"Escalated Cases\"| I
+H -->|\"Approved / Rejected\"| J
 
-MongoDB
+%% --- STEP 9: HUMAN REVIEW UI ---
+I["🧑‍🏫 Manual Review Dashboard
+- Evidence Viewer
+- Reviewer Actions"] -->|\"Override Decision\"| J
 
-Redis / RabbitMQ
+%% --- FINAL STORAGE ---
+J["🗂 Persistent Storage
+- MongoDB (KYC State)
+- S3/MinIO (Media)
+- Feature Store (ML Signals)"] --> K
 
-🧠 Machine Learning
+%% --- STEP 11: AUDIT & MONITORING ---
+K["📊 Compliance, Telemetry & Audit
+- OpenTelemetry
+- Prometheus/Grafana
+- Immutable Logs"]
+```
 
-OpenCV
+Textual numbered steps (matching the flowchart above):
 
-DeepFace / VGG-19
+1. **Client (WebRTC)** — Live capture from user's device, inline validation, consent and session creation.  
+2. **API Gateway / Auth Layer** — OAuth2/JWT, rate limiting, routing (REST + WebSocket), handles SDP/ICE signaling handoffs.  
+3. **Signaling / Media Relay** — Session negotiation and TURN/STUN media relays for reliable media transport.  
+4. **Ingestion Service** — Create KYC session, persist metadata, and publish events to processing pipelines.  
+5. **Message Broker / Event Stream** — Kafka / RabbitMQ / Redis Streams to queue ML jobs and coordinate async workflows.  
+6. **ML Inference Cluster** — OCR, face matching, liveness & anti-spoofing; returns signals and confidence scores.  
+7. **Risk Engine** — Aggregates ML signals, applies scoring model and compliance rules to produce a decision payload.  
+8. **Decision System** — Auto-Approve, Reject, or mark for Human Review (escalation).  
+9. **Human Review Dashboard** — Evidence viewer and reviewer actions for escalated cases; overrides feed back into final decision.  
+10. **Persistent Storage** — MongoDB for KYC state, S3/MinIO for media, feature store for ML signals.  
+11. **Audit, Telemetry & Monitoring** — OpenTelemetry, Prometheus/Grafana and immutable logs for compliance and traceability.
 
-Whisper + Bark
+---
 
-EasyOCR / Tesseract
+## 🧰 Key Principles
 
-📂 Core Data Entities
+- Modular microservice architecture  
+- Event-driven async workflows  
+- Auto-scaled ML inference workloads
 
-users
+---
 
-sessions
+## 🧰 Tech Stack
 
-documents
+**Frontend**
+- Next.js
+- WebRTC
+- TailwindCSS + Shadcn
+- Crisp Assistant
 
-audit_logs
+**Backend**
+- Node.js (Express + TypeScript)
+- Python (FastAPI for ML inference)
+- MongoDB
+- Redis / RabbitMQ
 
-risk_events
+**Machine Learning**
+- OpenCV
+- DeepFace / VGG-19
+- Whisper + Bark
+- EasyOCR / Tesseract
 
-Includes: field-level encryption + regulatory retention support
+---
 
-🔐 Security & Compliance
+## 📂 Core Data Entities
 
-AES-256 encrypted storage
+- users  
+- sessions  
+- documents  
+- audit_logs  
+- risk_events
 
-TLS 1.3 in-transit
+Includes: field-level encryption and regulatory retention support.
 
-RBAC + Zero-Trust model
+---
 
-Immutable audit logs
+## 🔐 Security & Compliance
 
-Explainable AI fairness metrics
+- AES-256 encrypted storage  
+- TLS 1.3 in transit  
+- RBAC + Zero-Trust model  
+- Immutable audit logs  
+- Explainable AI fairness metrics
 
-📈 Benchmarks & Goals
-Metric	Target
-Average Verification Time	⏱ < 5 min
-Automated Approvals	≥ 70%
-OCR Accuracy	> 98%
-Liveness (FAR/FRR)	Configurable
-🚀 Future Enhancements
+---
 
-🧓 Senior-citizen guided accessibility mode
+## 📈 Benchmarks & Goals
 
-🌍 Expand to global ID models
+| Metric                        | Target         |
+|-------------------------------|:---------------|
+| Average Verification Time     | < 5 min        |
+| Automated Approvals           | ≥ 70%          |
+| OCR Accuracy                  | > 98%          |
+| Liveness (FAR/FRR)            | Configurable   |
 
-🤖 Continual ML retraining pipeline
+---
 
-📱 Mobile SDK + offline verification
+## 🚀 Future Enhancements
+
+- Senior-citizen guided accessibility mode  
+- Expand to global ID models  
+- Continual ML retraining pipeline  
+- Mobile SDK + offline verification
+
+---
