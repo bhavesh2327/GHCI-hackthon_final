@@ -5,7 +5,6 @@ Reimagining digital onboarding with AI-powered document verification, biometric 
 
 ---
 
-## ⚡ Overview
 
 AI-KYC is a next-generation video-based KYC system powered by:
 
@@ -63,9 +62,7 @@ There’s a need for a smart, automated, accessible, multilingual verification s
 
 This README replaces the Mermaid diagram with a clearer, human-friendly architecture description suitable for project README consumption. It focuses on responsibilities, data flow, security and operational considerations so engineers and reviewers can quickly understand the system.
 
-## High-level ASCII diagram
-
-Note: this is intended for README consumption — use it in docs or convert to diagrams (PlantUML, draw.io) as needed.
+## High-level diagram
 
 ```
 [WebRTC Client] --(1)--> [API Gateway / Auth]
