@@ -59,7 +59,6 @@ There’s a need for a smart, automated, accessible, multilingual verification s
 
 ## 🧩 System Architecture
 
-A high-level flow of the system is illustrated below. The mermaid flowchart is included for quick visualization and the numbered steps follow the same sequence so readers without mermaid rendering can still read the flow.
 
 ```mermaid
 flowchart LR
