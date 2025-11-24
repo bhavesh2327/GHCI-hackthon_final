@@ -1,179 +1,181 @@
-# 🔐 AI-KYC — Intelligent Video-Based KYC Automation  
-### Built for **GHCI Hackathon 2025**
+🔐 AI-KYC — Intelligent Video-Based KYC Automation
+Built for GHCI Hackathon 2025
 
-Reimagining digital onboarding with **AI-powered document verification**, **biometric identity matching**, and **real-time video-based authentication** — ensuring compliance, transparency, and scalability.
+Reimagining digital onboarding with AI-powered document verification, biometric identity matching, and real-time video authentication — ensuring compliance, transparency, and scalability.
 
----
+⚡ Overview
 
-## ⚡ Overview  
+AI-KYC is a next-generation video-based KYC system powered by:
 
-**AI-KYC** is a next-generation Video-Based KYC system powered by:
+🧠 Machine Learning
 
-- 🧠 Machine Learning  
-- 🎥 WebRTC-based live video capture  
-- 🔍 OCR-powered document extraction  
-- 👤 Biometric face recognition + liveness check  
-- 📊 Automated risk scoring and explainable audit logs  
+🎥 WebRTC-based live identity capture
 
-It delivers a fast, secure, and intuitive onboarding experience tailored for financial institutions and users.
+🔍 OCR-powered document parsing
 
----
+👤 Biometric face recognition + liveness detection
 
-## 🚩 Problem  
+📊 Automated risk scoring with explainable audit logs
+
+🚩 Problem
 
 Traditional KYC systems are:
 
-- ⏳ Slow and manually driven  
-- 🧾 Error-prone  
-- 💸 Expensive to scale  
-- ⚠️ Not user-friendly for elderly or non-technical applicants  
+⏳ Slow and manual
 
-There is a need for a **smart, automated, multilingual, and accessible system** that reduces friction while preventing fraud.
+🧾 Error-prone
 
----
+💸 Expensive at scale
 
-## 🎯 Solution  
+⚠️ Hard for elderly / non-technical users
 
-AI-KYC automates the entire KYC lifecycle using an **AI-assisted guided flow**:
+There’s a need for a smart, automated, accessible, multilingual verification system that reduces friction while preventing fraud.
 
-- 🤖 Conversational onboarding  
-- 🧾 OCR-based document scanning & extraction  
-- 👤 Face match + passive liveness check  
-- 🗣 Read-aloud verification with multilingual speech support  
-- 👨‍💼 Human escalation workflow for edge cases  
+🎯 Our Solution
 
-This reduces verification time from **days → minutes**.
+AI-KYC automates the entire verification lifecycle:
 
----
+🤖 Conversational guided onboarding
 
-## 🛠 Features  
+🧾 OCR-based document scanning
 
-| Feature | Status |
-|--------|--------|
-| AI-based conversational flow | ✅ |
-| WebRTC-Based Video Capture | ✅ |
-| PAN / Aadhaar OCR & Validation | ✅ |
-| Signature Detection | 🧪 Prototype |
-| Liveness Detection | ✅ |
-| Facial Recognition | ✅ |
+👤 Face match + passive liveness
 
-**flowchart LR**
+🗣 Read-aloud text verification ( multilingual )
+
+👨‍💼 Human review escalation when confidence drops
+
+⏱ Outcome: Days → Minutes
+
+🛠 Feature Matrix
+Feature	Status
+AI-guided conversational onboarding	✅
+WebRTC Live Capture	✅
+PAN / Aadhaar OCR Parsing	✅
+Signature Detection	🧪 Prototype
+Passive Liveness Detection	✅
+Facial Recognition	✅
+
+🧩 System Architecture
 ┌──────────────────────────────────────────────────────────────┐
-│                        User → WebRTC Client                 │
+│                     User → WebRTC Client                     │
 └──────────────────────────────────────────────────────────────┘
                                  │
                                  ▼
 ───────────────────────────────────────────────────────────────────
 **Step 1 — API Gateway**
-Acts as the entry point for authentication, routing, throttling,  
-and secure communication with backend microservices.
+Authentication, routing, throttling, and secure request handling.
 ───────────────────────────────────────────────────────────────────
                                  │
                                  ▼
 ───────────────────────────────────────────────────────────────────
 **Step 2 — ML Services**
-Handles:
-  • Face Recognition  
-  • Liveness Detection  
-  • Speech-to-Text  
-  • OCR Document Parsing  
-These services are containerized and scale horizontally based on load.
+• Face Recognition  
+• Liveness Detection  
+• OCR Document Parsing  
+• Speech-to-Text  
+Horizontally scalable inference via containerized microservices.
 ───────────────────────────────────────────────────────────────────
                                  │
                                  ▼
 ───────────────────────────────────────────────────────────────────
 **Step 3 — Risk Engine**
-Aggregates ML outputs, identity checks, user metadata, and anomaly scoring  
-to assign a dynamic Trust/Risk level.
+Scores user identity using ML results, metadata, and anomaly detection.
 ───────────────────────────────────────────────────────────────────
                                  │
                                  ▼
 ───────────────────────────────────────────────────────────────────
 **Step 4 — Decision System**
-Final evaluation logic deciding:
-  ✔ Auto Approval  
-  ✔ Rejection  
-  ✔ Escalation to Review  
+Logic determines:  
+✔ Auto-Approve | ❌ Reject | 🏷 Escalate to Human Review
 ───────────────────────────────────────────────────────────────────
                                  │
-                                 ├─────────────► Manual Review & Compliance Team
-                                 │                   (Escalation Path)
+                                 ├─────────────► Manual Compliance Review
                                  │
                                  ▼
 ───────────────────────────────────────────────────────────────────
-**Step 5 — Audit & Monitoring Dashboards**
-Centralized UI providing:
-  • Case history  
-  • System logs  
-  • Risk scoring timeline  
-  • Regulatory audit compliance  
+**Step 5 — Audit Dashboard**
+Case history, scoring timeline, compliance logs, traceability.
 ───────────────────────────────────────────────────────────────────
 
 
-🧰 **Key Design Principles**
-- Microservice-based modular architecture  
-- Event-driven communication using message queues  
-- Auto-scalable ML inference workloads  
+🧰 Key Principles
 
--
+Modular microservice architecture
 
-## 🧰 Tech Stack  
+Event-driven async workflows
 
-### Frontend  
-- Next.js  
-- WebRTC  
-- TailwindCSS + Shadcn  
-- Crisp Live Assistant  
+Auto-scaled ML inference workloads
 
-### Backend  
-- Node.js (Express + TypeScript)  
-- Python (FastAPI for ML inference)  
-- MongoDB  
-- Redis / RabbitMQ  
+🧰 Tech Stack
+🎨 Frontend
 
-### Machine Learning  
-- OpenCV  
-- EasyOCR / Tesseract  
-- DeepFace / VGG-19  
-- Whisper + Bark AI
+Next.js
 
----
+WebRTC
 
-## 📂 Core Data Entities  
+TailwindCSS + Shadcn
 
-- `users`  
-- `sessions`  
-- `documents`  
-- `auditLogs`  
-- `riskEvents`  
+Crisp Assistant
 
-Includes: **field-level encryption + compliance retention policies**
+⚙️ Backend
 
----
+Node.js (Express + TypeScript)
 
-## 🔐 Security & Compliance  
+Python (FastAPI for ML inference)
 
-- AES-256 encrypted storage  
-- TLS 1.3 in transit  
-- RBAC with least-privilege  
-- Immutable audit logs  
-- Explainable AI fairness tracking  
+MongoDB
 
----
+Redis / RabbitMQ
 
-## 📈 Benchmarks / KPIs  
+🧠 Machine Learning
 
-| Metric | Target |
-|--------|--------|
-| Avg KYC Completion Time | ⏱ < 5 min |
-| Automated Approval Rate | ≥ 70% |
-| OCR Accuracy | > 98% |
-| Liveness → FAR/FRR | Configurable |
+OpenCV
 
+DeepFace / VGG-19
 
-## 🚀 Future Enhancements  
+Whisper + Bark
 
-- 🧓 Guided onboarding for senior citizens  
-- 🌍 Support for global govt IDs  
-- 🤖 Continuous ML model retraining  
-- 📱 Mobile SDK + offline verification  
+EasyOCR / Tesseract
+
+📂 Core Data Entities
+
+users
+
+sessions
+
+documents
+
+audit_logs
+
+risk_events
+
+Includes: field-level encryption + regulatory retention support
+
+🔐 Security & Compliance
+
+AES-256 encrypted storage
+
+TLS 1.3 in-transit
+
+RBAC + Zero-Trust model
+
+Immutable audit logs
+
+Explainable AI fairness metrics
+
+📈 Benchmarks & Goals
+Metric	Target
+Average Verification Time	⏱ < 5 min
+Automated Approvals	≥ 70%
+OCR Accuracy	> 98%
+Liveness (FAR/FRR)	Configurable
+🚀 Future Enhancements
+
+🧓 Senior-citizen guided accessibility mode
+
+🌍 Expand to global ID models
+
+🤖 Continual ML retraining pipeline
+
+📱 Mobile SDK + offline verification
