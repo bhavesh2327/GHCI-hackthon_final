@@ -57,116 +57,89 @@ This reduces verification time from **days → minutes**.
 | Liveness Detection | ✅ |
 | Facial Recognition | ✅ |
 
-## 🧱 Architecture  
-
-[WebRTC Client]
-     │   (1) Signaling (WebSocket / HTTP)
-     │
-     ▼
-[API Gateway / Auth]  ←─ JWT/OAuth2
-     │
-     ├─► [Signaling Service]  (handles SDP/ICE)  ── RTP/Media → TURN/STUN
-     │
-     └─► [REST/gRPC Proxy] ─► [Event Bus / Message Broker (Kafka/RabbitMQ)]
-                           ├─► [ML Inference Cluster] ─► [Risk Engine] ─► [Decision System]
-                           │         │                        │
-                           │         └─► Model Metrics & Telemetry  ─┐
-                           │                                             ▼
-                           └─► [Feature Store / DB]                     [Escalation Service]
-                                                                     └► [Audit Dashboard / UI]
-     
-
 flowchart LR
 
-%% ===== CLIENT ZONE =====
-subgraph Client["🧑‍💻 Client (Browser / Mobile App)"]
-    C1["WebRTC Video Capture"]
-    C2["Local Validation (Quality, Size, Format)"]
-    C3["Session & Upload Handler"]
-end
+%% --- STEP 1: CLIENT ---
+A["🧑‍💻 WebRTC Client
+- Video Capture
+- Inline Validation
+- Consent & Session"] 
 
-%% ===== API / GATEWAY =====
-subgraph Gateway["🔐 API Gateway / Auth"]
-    G1["JWT Auth + Rate Limiting"]
-    G2["Request Routing (REST/gRPC/WebSocket)"]
-end
+-->|"WebRTC + Auth Token"| B
 
-%% ===== INGESTION & QUEUE =====
-subgraph Ingestion["📩 Ingestion + Session Service"]
-    I1["Session Creation"]
-    I2["Evidence Metadata Store"]
-    I3["Job Enqueue → Queue"]
-end
+%% --- STEP 2: API GATEWAY ---
+B["🔐 API Gateway / Auth Layer
+- JWT/OAuth2
+- Rate Limiting
+- WebSocket + REST Routing"]
 
-subgraph Queue["📬 Message Queue"]
-    Q1["Redis Streams / RabbitMQ / Kafka"]
-end
+-->|"Signaling SDP/ICE"| C
+B -->|"KYC Submission REST / gRPC"| D
 
-%% ===== STORAGE =====
-subgraph Storage["🗂 Storage Layer"]
-    S1["Object Storage (S3/MinIO)"]
-    S2["MongoDB (Sessions, Evidence Records)"]
-    S3["Feature Store (Optional)"]
-end
+%% --- STEP 3: SIGNALING / MEDIA ---
+C["📡 Signaling Service
+(Handles Session Negotiation)"] 
+--> TURN
 
-%% ===== ML PROCESSING =====
-subgraph ML["🧠 ML Processing Services"]
-    M1["OCR & Document Parsing"]
-    M2["Face Recognition + Embeddings"]
-    M3["Liveness Detection"]
-end
+TURN["TURN/STUN Relay"]
 
-%% ===== RISK ENGINE =====
-subgraph Risk["⚖️ Risk Engine & Rules"]
-    R1["Signal Aggregation"]
-    R2["Scoring Model"]
-    R3["Decision Logic: Approve | Reject | Manual Review"]
-end
+%% --- STEP 4: INGEST & QUEUE ---
+D["📩 Ingestion Service
+- Create KYC Session
+- Store Metadata
+- Trigger Processing"]
 
-%% ===== HUMAN REVIEW =====
-subgraph Review["🧑‍🏫 Human Review UI"]
-    H1["Case Viewer"]
-    H2["Override Decision"]
-    H3["Feedback Loop for Model Training"]
-end
+-->|"Publish Event"| E
 
-%% ===== OBSERVABILITY =====
-subgraph Observability["📊 Logging, Monitoring & Compliance"]
-    O1["Audit Logs"]
-    O2["Metrics (Prometheus/Grafana)"]
-    O3["Tracing (OpenTelemetry)"]
-end
+%% --- STEP 5: EVENT BUS ---
+E["📬 Message Broker
+(Kafka / RabbitMQ / Redis Streams)"]
 
+-->|"Inference Jobs"| F
 
+%% --- STEP 6: ML PROCESSING CLUSTER ---
+F["🤖 ML Inference Cluster
+- OCR (ID reading)
+- Face Match
+- Liveness / Anti-Spoofing"] 
+-->|"Extracted Signals"| G
 
-%% ===== FLOWS =====
+%% --- STEP 7: RISK ENGINE ---
+G["⚖️ Risk Engine
+- Aggregation
+- Weighted Scoring
+- Compliance Logic"]
 
-C1 --> C2 --> C3 --> G1 --> G2 --> I1 --> I2 --> I3 --> Q1
-Q1 --> M1
-Q1 --> M2
-Q1 --> M3
+-->|"Decision + Confidence"| H
 
-M1 --> R1
-M2 --> R1
-M3 --> R1
+%% --- STEP 8: DECISION SYSTEM ---
+H["🧠 Decision System
+🟢 Approve
+🟡 Escalate (Low Confidence)
+🔴 Reject"]
 
-R1 --> R2 --> R3
+-->|"If Escalated"| I
+H -->|"If Approved/Rejeted"| J
 
-R3 -->|Auto Approve/Reject| S2
-R3 -->|Manual Review Needed| H1
+%% --- STEP 9: MANUAL REVIEW UI ---
+I["🧑‍🏫 Manual Review Dashboard
+- Evidence Viewer
+- Override Actions"] 
+-->|"Final Action Logged"| J
 
-H2 --> S2
-H2 --> O1
+%% --- STEP 10: STORAGE / AUDIT ---
+J["🗂 Final Record Storage
+- MongoDB (KYC State)
+- Object Storage (Media)
+- Feature Store (ML Signals)"]
 
-I2 --> S2
-C3 --> S1
-M1 --> S3
-M2 --> S3
-M3 --> S3
+--> K
 
-O1 --> O2 --> O3
-
-
+%% --- STEP 11: COMPLIANCE ---
+K["📊 Audit & Monitoring
+- OpenTelemetry
+- Prometheus/Grafana
+- Immutable Audit Logs"]
 
 ---
 
