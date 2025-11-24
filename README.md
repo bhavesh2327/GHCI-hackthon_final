@@ -59,16 +59,114 @@ This reduces verification time from **days → minutes**.
 
 ## 🧱 Architecture  
 
-User → WebRTC Client
-↓
-API Gateway → ML Services → Risk Engine → Decision System
-|
-→ Escalation + Audit Dashboard
+[WebRTC Client]
+     │   (1) Signaling (WebSocket / HTTP)
+     │
+     ▼
+[API Gateway / Auth]  ←─ JWT/OAuth2
+     │
+     ├─► [Signaling Service]  (handles SDP/ICE)  ── RTP/Media → TURN/STUN
+     │
+     └─► [REST/gRPC Proxy] ─► [Event Bus / Message Broker (Kafka/RabbitMQ)]
+                           ├─► [ML Inference Cluster] ─► [Risk Engine] ─► [Decision System]
+                           │         │                        │
+                           │         └─► Model Metrics & Telemetry  ─┐
+                           │                                             ▼
+                           └─► [Feature Store / DB]                     [Escalation Service]
+                                                                     └► [Audit Dashboard / UI]
+     
+
+flowchart LR
+
+%% ===== CLIENT ZONE =====
+subgraph Client["🧑‍💻 Client (Browser / Mobile App)"]
+    C1["WebRTC Video Capture"]
+    C2["Local Validation (Quality, Size, Format)"]
+    C3["Session & Upload Handler"]
+end
+
+%% ===== API / GATEWAY =====
+subgraph Gateway["🔐 API Gateway / Auth"]
+    G1["JWT Auth + Rate Limiting"]
+    G2["Request Routing (REST/gRPC/WebSocket)"]
+end
+
+%% ===== INGESTION & QUEUE =====
+subgraph Ingestion["📩 Ingestion + Session Service"]
+    I1["Session Creation"]
+    I2["Evidence Metadata Store"]
+    I3["Job Enqueue → Queue"]
+end
+
+subgraph Queue["📬 Message Queue"]
+    Q1["Redis Streams / RabbitMQ / Kafka"]
+end
+
+%% ===== STORAGE =====
+subgraph Storage["🗂 Storage Layer"]
+    S1["Object Storage (S3/MinIO)"]
+    S2["MongoDB (Sessions, Evidence Records)"]
+    S3["Feature Store (Optional)"]
+end
+
+%% ===== ML PROCESSING =====
+subgraph ML["🧠 ML Processing Services"]
+    M1["OCR & Document Parsing"]
+    M2["Face Recognition + Embeddings"]
+    M3["Liveness Detection"]
+end
+
+%% ===== RISK ENGINE =====
+subgraph Risk["⚖️ Risk Engine & Rules"]
+    R1["Signal Aggregation"]
+    R2["Scoring Model"]
+    R3["Decision Logic: Approve | Reject | Manual Review"]
+end
+
+%% ===== HUMAN REVIEW =====
+subgraph Review["🧑‍🏫 Human Review UI"]
+    H1["Case Viewer"]
+    H2["Override Decision"]
+    H3["Feedback Loop for Model Training"]
+end
+
+%% ===== OBSERVABILITY =====
+subgraph Observability["📊 Logging, Monitoring & Compliance"]
+    O1["Audit Logs"]
+    O2["Metrics (Prometheus/Grafana)"]
+    O3["Tracing (OpenTelemetry)"]
+end
 
 
-- Modular microservices  
-- Event-driven workflows  
-- Horizontally scalable ML inference  
+
+%% ===== FLOWS =====
+
+C1 --> C2 --> C3 --> G1 --> G2 --> I1 --> I2 --> I3 --> Q1
+Q1 --> M1
+Q1 --> M2
+Q1 --> M3
+
+M1 --> R1
+M2 --> R1
+M3 --> R1
+
+R1 --> R2 --> R3
+
+R3 -->|Auto Approve/Reject| S2
+R3 -->|Manual Review Needed| H1
+
+H2 --> S2
+H2 --> O1
+
+I2 --> S2
+C3 --> S1
+M1 --> S3
+M2 --> S3
+M3 --> S3
+
+O1 --> O2 --> O3
+
+
 
 ---
 
