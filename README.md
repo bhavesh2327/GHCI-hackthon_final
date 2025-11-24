@@ -59,89 +59,106 @@ There’s a need for a smart, automated, accessible, multilingual verification s
 
 ## 🧩 System Architecture
 
-flowchart LR
+# KYC Real-time Verification — Architecture Overview
 
-%% --- STEP 1: CLIENT ---
-A["🧑‍💻 WebRTC Client
-- Video Capture
-- Inline Validation
-- Consent & Session"] 
+This README replaces the Mermaid diagram with a clearer, human-friendly architecture description suitable for project README consumption. It focuses on responsibilities, data flow, security and operational considerations so engineers and reviewers can quickly understand the system.
 
--->|\"WebRTC + JWT Auth\"| B
+## High-level ASCII diagram
 
-%% --- STEP 2: API GATEWAY ---
-B["🔐 API Gateway / Auth Layer
-- OAuth2/JWT
-- Rate Limiting
-- REST + WebSocket Routing"]
+Note: this is intended for README consumption — use it in docs or convert to diagrams (PlantUML, draw.io) as needed.
 
--->|\"SDP / ICE Signaling\"| C
-B -->|\"KYC Submission (REST/gRPC)\"| D
+```
+[WebRTC Client] --(1)--> [API Gateway / Auth]
+       |                      |
+       |                      +--(2a)--> [Signaling Service] ---> [TURN/STUN Relay]
+       |                      |
+       +--(2b)--> REST: /kyc --> [Ingestion Service] --(3)--> [Message Broker / Event Stream]
+                                                           |
+                                                           +--(4)--> [ML Inference Cluster]
+                                                           |            - OCR
+                                                           |            - Face match
+                                                           |            - Liveness / anti-spoof
+                                                           |
+                                                           +--(5)--> [Risk Engine / Scoring]
+                                                                     |
+                                                                     +--(6a)--> [Decision Service] --> [Persistent Storage]
+                                                                     |                       \
+                                                                     |                        -> Approved/Rejected notifications
+                                                                     |
+                                                                     +--(6b)--> [Manual Review UI] --> [Decision Override] --> [Persistent Storage]
 
-%% --- STEP 3: SIGNALING / MEDIA ---
-C["📡 Signaling Service
-- Session Negotiation"] --> TURN
-
-TURN["TURN/STUN Media Relay"]
-
-%% --- STEP 4: INGEST & QUEUE ---
-D["📩 Ingestion Service
-- Create KYC Session
-- Store Metadata
-- Trigger Processing"] -->|\"Publish Event\"| E
-
-%% --- STEP 5: EVENT STREAM ---
-E["📬 Message Broker
-(Kafka / RabbitMQ / Redis Streams)"] -->|\"ML Jobs\"| F
-
-%% --- STEP 6: ML PROCESSING CLUSTER ---
-F["🤖 ML Inference Cluster
-- OCR (Documents)
-- Face Match
-- Liveness & Anti-Spoofing"] -->|\"Signals + Confidence Scores\"| G
-
-%% --- STEP 7: RISK ENGINE ---
-G["⚖️ Risk Engine
-- Signal Aggregation
-- Scoring Model
-- Rules / Compliance Logic"] -->|\"Decision Payload\"| H
-
-%% --- STEP 8: DECISION SYSTEM ---
-H["🧠 Decision System
-🟢 Approve | 🔴 Reject | 🟡 Review"] -->|\"Escalated Cases\"| I
-H -->|\"Approved / Rejected\"| J
-
-%% --- STEP 9: HUMAN REVIEW UI ---
-I["🧑‍🏫 Manual Review Dashboard
-- Evidence Viewer
-- Reviewer Actions"] -->|\"Override Decision\"| J
-
-%% --- FINAL STORAGE ---
-J["🗂 Persistent Storage
-- MongoDB (KYC State)
-- S3/MinIO (Media)
-- Feature Store (ML Signals)"] --> K
-
-%% --- STEP 11: AUDIT & MONITORING ---
-K["📊 Compliance, Telemetry & Audit
-- OpenTelemetry
-- Prometheus/Grafana
-- Immutable Logs"]
+[Persistent Storage] = MongoDB (session/state), S3/MinIO (media), Feature Store (ML signals)
+[Observability & Audit] = OpenTelemetry / Prometheus / Grafana / Immutable Logs
 ```
 
-Textual numbered steps (matching the flowchart above):
+## Component responsibilities
 
-1. **Client (WebRTC)** — Live capture from user's device, inline validation, consent and session creation.  
-2. **API Gateway / Auth Layer** — OAuth2/JWT, rate limiting, routing (REST + WebSocket), handles SDP/ICE signaling handoffs.  
-3. **Signaling / Media Relay** — Session negotiation and TURN/STUN media relays for reliable media transport.  
-4. **Ingestion Service** — Create KYC session, persist metadata, and publish events to processing pipelines.  
-5. **Message Broker / Event Stream** — Kafka / RabbitMQ / Redis Streams to queue ML jobs and coordinate async workflows.  
-6. **ML Inference Cluster** — OCR, face matching, liveness & anti-spoofing; returns signals and confidence scores.  
-7. **Risk Engine** — Aggregates ML signals, applies scoring model and compliance rules to produce a decision payload.  
-8. **Decision System** — Auto-Approve, Reject, or mark for Human Review (escalation).  
-9. **Human Review Dashboard** — Evidence viewer and reviewer actions for escalated cases; overrides feed back into final decision.  
-10. **Persistent Storage** — MongoDB for KYC state, S3/MinIO for media, feature store for ML signals.  
-11. **Audit, Telemetry & Monitoring** — OpenTelemetry, Prometheus/Grafana and immutable logs for compliance and traceability.
+1. WebRTC Client (browser / mobile)
+   - Capture video/images.
+   - Perform inline validations (file types, size, simple heuristics).
+   - Authenticate using JWT/OAuth2.
+   - Establish WebRTC with signaling for live sessions (ICE/SDP). Upload fallback via REST if needed.
+
+2. API Gateway / Auth Layer
+   - Validate JWT / OAuth2 tokens.
+   - Rate limit and route requests (REST + WebSocket).
+   - Forward SDP/ICE to signaling service.
+   - Expose secure REST endpoints for KYC submissions.
+
+3. Signaling Service & TURN/STUN
+   - WebRTC session negotiation (SDP exchange).
+   - Use TURN (coturn recommended) for media relay where direct P2P is not possible.
+   - Emit session metadata to ingestion.
+
+4. Ingestion Service
+   - Create KYC session objects, validate payload, persist initial metadata.
+   - Store references to media uploads.
+   - Publish canonical KYC events to the message broker (Kafka / RabbitMQ / Redis Streams).
+
+5. Message Broker (Event Stream)
+   - Decouple ingestion from downstream processing.
+   - Guarantee at-least-once processing semantics; compact topics for idempotency.
+   - Support replay for reprocessing / model improvements.
+
+6. ML Inference Cluster
+   - Consume events, run inference pipelines:
+     - OCR (document parsing)
+     - Face detection & feature extraction
+     - Face-to-document / face-to-face matching
+     - Liveness and anti-spoof checks (challenge/response or video analysis)
+   - Return structured signals and confidence scores.
+
+7. Risk Engine & Decision Service
+   - Aggregate ML signals, business rules & compliance checks.
+   - Produce decisions: Approve / Reject / Review.
+   - Provide explanation metadata for auditability.
+
+8. Manual Review UI
+   - Present evidence (media, OCR results, scores).
+   - Allow reviewers to override decisions; track reviewer, timestamp, and justification.
+
+9. Persistent Storage
+   - KYC State: MongoDB (or Postgres) for sessions and state machine.
+   - Media: S3 / MinIO for immutable media storage; signed URLs for viewers.
+   - Feature Store: Redis/Feast for online features used in scoring or re-evaluation.
+
+10. Observability & Audit
+    - Traces: OpenTelemetry across services.
+    - Metrics: Prometheus + Grafana (latency, error rates, throughput).
+    - Immutable audit logs for compliance (WORM storage or append-only logs).
+    - Alerting for SLA breaches, model drift, and suspicious activity.
+
+## Data flow (simple step-by-step)
+
+1. Client authenticates and starts a WebRTC session (or performs REST upload).
+2. API Gateway validates token and forwards signaling or REST submission.
+3. Ingestion service creates KYC session, stores metadata and uploads, publishes an event.
+4. Event stream routes to ML processing cluster(s).
+5. ML jobs emit signals & confidences back to a signals topic / feature store.
+6. Risk engine aggregates signals, applies rules, and emits a decision payload.
+7. Decisions are persisted and notifications are sent to client / downstream systems.
+8. Cases flagged for manual review are routed to reviewers who can override and persist final state.
+9. Telemetry and immutable logs capture the full trail for compliance.
 
 ---
 
