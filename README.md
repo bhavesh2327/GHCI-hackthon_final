@@ -1,4 +1,4 @@
-# **AI-KYC — Intelligent Video-Based KYC Automation**
+# **AI-KYC-GHCI hackathon project — Intelligent Video-Based KYC Automation**
 **Built for GHCI Hackathon 2025**
 
 Reimagining digital onboarding with AI-powered document verification, biometric identity matching, and real-time video authentication — ensuring compliance, transparency, and scalability.
