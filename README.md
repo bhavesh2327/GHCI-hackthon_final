@@ -59,8 +59,6 @@ There’s a need for a smart, automated, accessible, multilingual verification s
 
 ## 🧩 System Architecture
 
-
-```mermaid
 flowchart LR
 
 %% --- STEP 1: CLIENT ---
