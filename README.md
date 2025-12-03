@@ -4,7 +4,7 @@
 Reimagining digital onboarding with AI-powered document verification, biometric identity matching, and real-time video authentication — ensuring compliance, transparency, and scalability.
 
 ---
-
+  
 
 AI-KYC is a next-generation video-based KYC system powered by:
 
